@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <g id="play" transform="translate(-32 -645)">
+    <rect id="NoPath" width="30" height="30" rx="15" transform="translate(32 645)" fill="#fff"/>
+    <path id="Icon_awesome-play" data-name="Icon awesome-play" d="M9.474,4.794,1.616.149A1.066,1.066,0,0,0,0,1.071v9.288a1.071,1.071,0,0,0,1.616.922L9.474,6.638a1.07,1.07,0,0,0,0-1.844Z" transform="translate(43 654.283)" fill="#b09ba0"/>
+  </g>
+</svg>
