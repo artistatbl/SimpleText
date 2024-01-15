@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:CleanNote.ViewModels"
+             x:Class="CleanNote.Views.AddNotePage"
+             Title="Add Note" Shell.NavBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <vm:AddNoteViewModel x:Name="viewModel"/>
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *" RowSpacing="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="20">
+        <ImageButton Source="back.png" HorizontalOptions="Start" WidthRequest="30" Command="{Binding GoBackCommand}"/>
+        <Label Grid.Row="1" Text="Add Note" FontFamily="Semibold" FontSize="26" VerticalOptions="Center" HorizontalOptions="Center" />
+        <HorizontalStackLayout Grid.Row="2" Spacing="15" Margin="20" HorizontalOptions="Center">
+            <RadioButton x:Name="TextViewSelector" Content="Text" ControlTemplate="{StaticResource RadioButtonStyleTemplate}" IsChecked="True"/>
+            <RadioButton x:Name="VoiceViewSelector" Content="Voice" ControlTemplate="{StaticResource RadioButtonStyleTemplate}"/>
+            <RadioButton x:Name="ReminderViewSelector" Content="Reminder" ControlTemplate="{StaticResource RadioButtonStyleTemplate}"/>
+        </HorizontalStackLayout>
+        <Grid RowDefinitions="Auto, *, Auto" Grid.Row="3" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Entry Placeholder="Title" FontSize="30" FontFamily="Semibold"/>
+            <Grid Grid.Row="1" RowDefinitions="*, Auto" Margin="0,0,0,20" IsVisible="{Binding Source={x:Reference TextViewSelector}, Path=IsChecked}">
+                <Editor Placeholder="Type your note here..."/>
+                <HorizontalStackLayout Grid.Row="1" Spacing="10">
+                    <Grid>
+                        <Border StrokeShape="RoundRectangle 10" HeightRequest="110" WidthRequest="110">
+                            <Image Aspect="AspectFill" Source="https://images.pexels.com/photos/260024/pexels-photo-260024.jpeg"/>
+                        </Border>
+                        <ImageButton Source="remove.png" HeightRequest="20" WidthRequest="20" HorizontalOptions="End" VerticalOptions="Start"
+                                     Margin="0,-5,-5,0"/>
+                    </Grid>
+                    <Border StrokeShape="RoundRectangle 10" HeightRequest="110" WidthRequest="110">
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                            <Image Source="photo.png" WidthRequest="25" HorizontalOptions="Center"/>
+                            <Label Text="Add Image" FontFamily="Semibold"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid Grid.Row="1" IsVisible="{Binding Source={x:Reference VoiceViewSelector}, Path=IsChecked}">
+                <Grid RowDefinitions="*, Auto" Margin="0,0,0,20" >
+                    <Editor Placeholder="Type your note here..."/>
+                    <VerticalStackLayout Grid.Row="1" Spacing="10">
+                        <Border StrokeShape="RoundRectangle 10" HeightRequest="110" WidthRequest="110">
+                            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                                <Image Source="mic.png" WidthRequest="25" HorizontalOptions="Center"/>
+                                <Label Text="Record Voice" FontFamily="Semibold"/>
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border Grid.Row="1" BackgroundColor="#B09BA0" StrokeShape="RoundRectangle 20" StrokeThickness="0" 
+                                Margin="20" Padding="5" HeightRequest="40" MaximumWidthRequest="200">
+                            <HorizontalStackLayout Spacing="15">
+                                <Image Source="play.png"/>
+                                <Image Source="graph.png"/>
+                            </HorizontalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1" IsVisible="{Binding Source={x:Reference ReminderViewSelector}, Path=IsChecked}">
+                <VerticalStackLayout Spacing="20">
+                    <Editor Placeholder="Type your description here..." HeightRequest="100"/>
+                    <DatePicker />
+                    <TimePicker />
+                </VerticalStackLayout>
+            </Grid>
+            <Button Text="Save Note" Grid.Row="2" WidthRequest="300"/>
+        </Grid>
+    </Grid>
+</ContentPage>

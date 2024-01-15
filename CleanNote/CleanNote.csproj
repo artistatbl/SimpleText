@@ -36,6 +36,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<DefaultLanguage>en-US</DefaultLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -56,31 +57,47 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="FakeSplash.scale-200.png" />
+	  <None Remove="Platforms\Windows\FakeSplash.png" />
 	  <None Remove="Resources\Fonts\OpenSans-Light.ttf" />
 	  <None Remove="Resources\Images\add.svg" />
 	  <None Remove="Resources\Images\alarm.svg" />
 	  <None Remove="Resources\Images\back.svg" />
 	  <None Remove="Resources\Images\graph.svg" />
-	  <None Remove="Resources\Images\photo.svg" />
+	  <None Remove="Resources\Images\mic.svg" />
+	  <None Remove="Resources\Images\photo.png" />
 	  <None Remove="Resources\Images\play.svg" />
-	  <None Remove="Resources\Images\record.svg" />
 	  <None Remove="Resources\Images\remove.svg" />
 	  <None Remove="Resources\Images\search.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Include="FakeSplash.scale-200.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Platforms\Windows\FakeSplash.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\" />
-	  <Folder Include="ViewModels\" />
-	</ItemGroup>
-
-	<ItemGroup>
+	  <MauiXaml Update="Views\AddNotePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AllNotesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\LandingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\NoteDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

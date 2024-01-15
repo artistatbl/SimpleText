@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CleanNote.Views.NoteDetailsPage"
+             Title="Note Details" Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto, Auto, *" RowSpacing="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="20">
+        <ImageButton Source="back.png" HorizontalOptions="Start" WidthRequest="30" Command="{Binding GoBackCommand}"/>
+        <Label Grid.Row="1" Text="Determinants of Human Acts" FontFamily="Semibold" FontSize="30" 
+               VerticalOptions="Center" Margin="0,20,0,0" MaximumWidthRequest="300" HorizontalOptions="Start"/>
+        <ScrollView Grid.Row="2" HorizontalScrollBarVisibility="Never" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="20">
+                <Border StrokeShape="RoundRectangle 5" HeightRequest="200" StrokeThickness="0">
+                    <Image Aspect="AspectFill" Source="https://images.pexels.com/photos/260024/pexels-photo-260024.jpeg"/>
+                </Border>
+                <Label Text="Each day is like building up your foundation, one brick at a time. And if the bricks are wobbly ones, they can go tumbling down on you with little provocation; its tough to build off of that compromised foundation. It takes daily work to strengthen our foundations, but once we do it's like having a solid bedrock on which to build.
+                        A brick is something real and tangible- an object no matter how small, will make its presence known in this world for generations; part of the property goes with the property deed as surely as water accompanies frost or sunlight lives in every shado"
+                       FontSize="16"/>
+            </VerticalStackLayout>
+        </ScrollView>
+        
+    </Grid>
+</ContentPage>

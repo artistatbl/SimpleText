@@ -1,9 +1,88 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:vm="clr-namespace:CleanNote.ViewModels"
+             xmlns:cv="clr-namespace:CleanNote.Converters"
              x:Class="CleanNote.Views.LandingPage"
              Title="Notes" Shell.NavBarIsVisible="False">
-    <Grid RowDefinitions="Auto, Auto, *, Auto" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="24,50">
-        <Label Text="Notes" VerticalOptions="Center" HorizontalOptions="Center" />
+
+
+    <ContentPage.BindingContext>
+        <vm:LandingViewModel x:Name="viewModel"/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <cv:NoteDataTemplateSelector x:Key="NoteDataTemplateSelector"
+                TextTemplate="{StaticResource TextTemplate}"
+                VoiceTemplate="{StaticResource VoiceTemplate}"
+                ReminderTemplate="{StaticResource ReminderTemplate}"/>
+            <cv:NoteTemplateConverter x:Key="NoteTemplateConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    
+    <Grid RowDefinitions="Auto, Auto, *, Auto" RowSpacing="10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0,50">
+        <Label Text="Notes" FontFamily="Semibold" FontSize="26" VerticalOptions="Center" HorizontalOptions="Center" />
+        <ImageButton Grid.Row="1" Source="add.png" HorizontalOptions="End" Margin="20" WidthRequest="38" Command="{Binding AddNoteCommand}"/>
+        <ScrollView Orientation="Vertical" Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                    HorizontalScrollBarVisibility="Never" VerticalScrollBarVisibility="Never">
+            <FlexLayout BindableLayout.ItemsSource="{Binding Notes}" 
+                            Direction="Column" Wrap="Wrap" HorizontalOptions="Center" Margin="5,0,15,0">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" HeightRequest="{Binding Height}"
+                                BackgroundColor="{Binding Color}" Margin="10,5" Padding="0,0,0,10">
+                            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">                                
+                                <Grid x:Name="TextView" RowDefinitions="Auto, *" VerticalOptions="FillAndExpand"
+                                      IsVisible="{Binding NoteType, Converter={StaticResource NoteTemplateConverter}, ConverterParameter=1}">
+                                    <Image Source="{Binding FileUrl}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" HeightRequest="95"
+                                           IsVisible="{Binding FileUrl, Converter={StaticResource IsNotNullConverter}}"/>
+                                    <VerticalStackLayout Grid.Row="1" Padding="10" Spacing="10" VerticalOptions="FillAndExpand">
+                                        <Label Text="{Binding Title}" FontSize="15" FontFamily="Semibold" MaximumWidthRequest="200"/>
+                                        <Label Text="{Binding Content}" FontSize="12" MaximumWidthRequest="200"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid x:Name="VoiceView" RowDefinitions="*, Auto" VerticalOptions="FillAndExpand" 
+                                      IsVisible="{Binding NoteType, Converter={StaticResource NoteTemplateConverter}, ConverterParameter=2}">
+                                    <VerticalStackLayout Padding="10" Spacing="10" VerticalOptions="FillAndExpand">
+                                        <Label Text="{Binding Title}" TextColor="#171C26" FontSize="15" FontFamily="Semibold" HorizontalOptions="Center" MaximumWidthRequest="200"/>
+                                        <Label Text="{Binding Content}" TextColor="#171C26" FontSize="12" HorizontalTextAlignment="Center" MaximumWidthRequest="200"/>
+                                    </VerticalStackLayout>
+                                    <Border Grid.Row="1" BackgroundColor="#B09BA0" StrokeShape="RoundRectangle 20" StrokeThickness="0" 
+                                            Margin="20" Padding="5" HeightRequest="40">
+                                        <HorizontalStackLayout Spacing="15">
+                                            <Image Source="play.png"/>
+                                            <Image Source="graph.png"/>
+                                        </HorizontalStackLayout>
+                                    </Border>
+                                </Grid>
+                                <Grid x:Name="ReminderView" RowDefinitions="Auto, *" Padding="10" 
+                                      IsVisible="{Binding NoteType, Converter={StaticResource NoteTemplateConverter}, ConverterParameter=3}">
+                                    <Image Source="alarm.png" HorizontalOptions="End"/>
+                                    <VerticalStackLayout Grid.Row="1" HorizontalOptions="Center" Spacing="20">
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Title}" FontSize="15" FontFamily="Semibold" HorizontalOptions="Center"/>
+                                            <Label Text="{Binding Content}" FontSize="12" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Time, StringFormat='{0:HH:mm}'}" FontSize="36" FontFamily="Light" HorizontalOptions="Center"/>
+                                            <Label Text="{Binding Date, StringFormat='{0:MMMM dd}'}" FontSize="12" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+
+        </ScrollView>
+        <Label Text="See All >" TextColor="{StaticResource Primary}" Grid.Row="3" HorizontalOptions="End" Margin="20,0">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ShowAllCommand}"/>
+            </Label.GestureRecognizers>
+        </Label>
     </Grid>
 </ContentPage>

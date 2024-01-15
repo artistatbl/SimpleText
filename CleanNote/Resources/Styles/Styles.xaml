@@ -2,8 +2,11 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:tk="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
+    <tk:IsNotNullConverter x:Key="IsNotNullConverter"/>
+    
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
     </Style>
@@ -70,7 +73,7 @@
     <Style TargetType="DatePicker">
         <Setter Property="TextColor" Value="{StaticResource White}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="FontFamily" Value="Regular"/>
+        <Setter Property="FontFamily" Value="Semibold"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
@@ -92,8 +95,8 @@
         <Setter Property="TextColor" Value="{StaticResource White}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="Regular"/>
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -115,7 +118,7 @@
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="Regular"/>
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -141,6 +144,7 @@
     <Style TargetType="ImageButton">
         <Setter Property="Opacity" Value="1" />
         <Setter Property="BorderColor" Value="Transparent"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="BorderWidth" Value="0"/>
         <Setter Property="CornerRadius" Value="0"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>
@@ -243,7 +247,7 @@
 
     <Style TargetType="RadioButton">
         <Setter Property="BackgroundColor" Value="Transparent"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="White" />
         <Setter Property="FontFamily" Value="Regular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>
@@ -372,9 +376,9 @@
     </Style>
 
     <Style TargetType="TimePicker">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="White" />
         <Setter Property="BackgroundColor" Value="Transparent"/>
-        <Setter Property="FontFamily" Value="Regular"/>
+        <Setter Property="FontFamily" Value="Semibold"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
@@ -422,5 +426,94 @@
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
+
+    <DataTemplate x:Key="TextTemplate">
+        <Grid Padding="5,10" Margin="5,0">
+            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" HeightRequest="{Binding Height}"
+                    BackgroundColor="{Binding Color}" >
+                <Grid x:Name="TextView" RowDefinitions="Auto, *" VerticalOptions="FillAndExpand" Padding="0,0,0,15">
+                    <Image Source="{Binding FileUrl}" Aspect="AspectFill" HorizontalOptions="FillAndExpand" HeightRequest="100"
+                           IsVisible="{Binding FileUrl, Converter={StaticResource IsNotNullConverter}}"/>
+                    <VerticalStackLayout Grid.Row="1" Margin="15" Spacing="10" VerticalOptions="FillAndExpand">
+                        <Label Text="{Binding Title}" FontSize="18" FontFamily="Semibold"/>
+                        <Label Text="{Binding Content}" FontSize="15"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="VoiceTemplate">
+        <Grid Padding="5,10" Margin="5,0">
+            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" HeightRequest="{Binding Height}"
+                    BackgroundColor="{Binding Color}">
+                <Grid x:Name="VoiceView" RowDefinitions="*, Auto" VerticalOptions="FillAndExpand">
+                    <VerticalStackLayout Padding="10" Spacing="10" VerticalOptions="FillAndExpand">
+                        <Label Text="{Binding Title}" TextColor="#171C26" FontSize="18" FontFamily="Semibold" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Content}" TextColor="#171C26" FontSize="15" HorizontalTextAlignment="Center"
+                               MaximumWidthRequest="300"/>
+                    </VerticalStackLayout>
+                    <Border Grid.Row="1" BackgroundColor="#B09BA0" StrokeShape="RoundRectangle 20" StrokeThickness="0" 
+                            Margin="20" Padding="5" HeightRequest="40" MaximumWidthRequest="200">
+                        <HorizontalStackLayout Spacing="15">
+                            <Image Source="play.png"/>
+                            <Image Source="graph.png"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ReminderTemplate">
+        <Grid Padding="5,10" Margin="5,0">
+            <Border StrokeShape="RoundRectangle 20" StrokeThickness="0" HeightRequest="{Binding Height}"
+                    BackgroundColor="{Binding Color}">
+                <Grid x:Name="ReminderView" RowDefinitions="Auto, *" Padding="10">
+                    <Image Source="alarm.png" HorizontalOptions="End"/>
+                    <VerticalStackLayout Grid.Row="1" HorizontalOptions="Center" Spacing="20">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Title}" FontSize="18" FontFamily="Semibold" HorizontalOptions="Center"/>
+                            <Label Text="{Binding Content}" FontSize="15" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Time, StringFormat='{0:HH:mm}'}" FontSize="36" FontFamily="Light" HorizontalOptions="Center"/>
+                            <Label Text="{Binding Date, StringFormat='{0:MMMM dd}'}" FontSize="15" HorizontalTextAlignment="Center" HorizontalOptions="Center"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+    <ControlTemplate x:Key="RadioButtonStyleTemplate">
+        <Border StrokeShape="RoundRectangle 30" StrokeThickness="0" BackgroundColor="#F0F0F1" 
+                MinimumWidthRequest="100">
+            <Label x:Name="label" Text="{TemplateBinding Content}" FontSize="14"
+                       HorizontalOptions="Center" VerticalOptions="Center"/>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CheckedStates">
+                        <VisualState x:Name="Checked">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter TargetName="label" Property="Label.Opacity" Value="1" />
+                                <Setter TargetName="label" Property="Label.TextColor" Value="White" />
+                                <Setter TargetName="label" Property="Label.FontFamily" Value="Semibold" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Unchecked">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#F0F0F1" />
+                                <Setter TargetName="label" Property="Label.Opacity" Value="0.6" />
+                                <Setter TargetName="label" Property="Label.TextColor" Value="Black" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+        </Border>
+    </ControlTemplate>
+
 
 </ResourceDictionary>
